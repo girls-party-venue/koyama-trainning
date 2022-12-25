@@ -1,27 +1,64 @@
 import random
 
 def main():
-  print("ぼっちのちんぽ or ぼっちんぽ")
-  cheating_flag = input()
+  mochigane = 10000
+  print("あなたの始めの持ち金は\\" + str(mochigane) + " です。")
+  cheating_flag = input("ぼっちのちんぽ or ぼっちんぽ?： ")
+
   print("掛け金は？")
   kakekin = int(input())
+  
+  #game_flagがTrueである限りゲームを続ける。
+  game_end_flag = False
+  while(game_end_flag == False):
+    print("Game Start!!!")
+    calc = chinchiro_game(cheating_flag, kakekin) - kakekin
+    #精算
+    mochigane = mochigane + calc
+    if mochigane < 0:
+      print("持ち金がありません。ゲーム終了です。")
+      game_end_flag = True
 
+    print("あなたの持ち金は\\" + str(mochigane) + " です。")
+    asking_continue = False
+    print("ゲームを続けますか？")
+    while(asking_continue == False):
+      continue_ = input("Press y or n and enter: ")
+      if continue_ == "n":
+        game_end_flag = True
+        print("ゲームを終了します。")
+        asking_continue = True
+      elif continue_ == "y":
+        game_end_flag = False
+        print("ゲームを継続します。")
+        asking_continue = True
+      else:
+        print("y か n を押してください。")
+        asking_continue = False
+        
+  
+def chinchiro_game(cheating_flag, kakekin):
   if syonben():
-    print("ションベンです。あなたの配当金は"+ str(kakekin * -1) +"です。")
-    return
-
-  if cheating_flag == "ぼっちんぽ":
-    saikoro1 = random.randint(4,6)
-    saikoro2 = random.randint(4,6)
-    saikoro3 = random.randint(4,6)
+    print("ションベンです。あなたの配当金は\\"+ str(kakekin * -1) +"です。")
+    return kakekin * -1
   else:
+    if cheating_flag == "ぼっちんぽ":
+      saikoro1 = random.randint(4,6)
+      saikoro2 = random.randint(4,6)
+      saikoro3 = random.randint(4,6)
+      deme = [saikoro1,saikoro2,saikoro3]
+      calc = kakekin * yaku(deme)
+      print("あなたの配当金は\\"+ str(calc) +"です。")
+      return calc
+    else:
       saikoro1 = random.randint(1,6)
       saikoro2 = random.randint(1,6)
       saikoro3 = random.randint(1,6)
-
-  deme = [saikoro1,saikoro2,saikoro3]
-  print("あなたの配当金は"+str(kakekin * yaku(deme))+"です。")
-
+      deme = [saikoro1,saikoro2,saikoro3]
+      calc = kakekin * yaku(deme)
+      print("あなたの配当金は\\"+ str(calc) +"です。")
+      return calc
+  
 def syonben():
   if random.random() > 0.9:
     return True
@@ -49,7 +86,8 @@ def yaku(deme):
       print("ヒフミ：配当-2倍です。")
       return -2
     print("あなたの負けです。")
-    return 0
+    return -1
 
 if __name__ == "__main__":
     main()
+  
