@@ -10,4 +10,4 @@ else:
     saikoro2 = random.randint(1,6)
     saikoro3 = random.randint(1,6)
 
-saikoro1, saikoro2, saikoro3
+print(saikoro1, saikoro2, saikoro3)
