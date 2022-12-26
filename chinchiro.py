@@ -2,6 +2,8 @@ import random
 import numpy as np
 from matplotlib import pyplot as plt
 
+deme_list = []
+
 def main():
   mochigane = 10000
   print("あなたの始めの持ち金は\\" + str(mochigane) + " です。")
@@ -19,11 +21,11 @@ def main():
       print("後藤さんちんぽでかいのね～")
   
   game_continue_flag = True
-  asking_continue = True
   #game_continue_flagがTrueである限りゲームを続ける。
   while(game_continue_flag):
+    asking_continue = True
     print("掛け金は？")
-    kakekin = kakekin()
+    kakekin = kakekin_func()
     print("Game Start!!!")
     mochigane += chinchiro_game(cheating_flag, kakekin) - kakekin
     if mochigane < 0:
@@ -49,7 +51,7 @@ def main():
         print("y/nを押してください。")
     plot_deme()
         
-def kakekin():
+def kakekin_func():
   #規定外の入力があった場合、もう一度入力させるためのwhile文
   #数字以外入力でエラー出力
   while True:
@@ -64,12 +66,9 @@ def kakekin():
         print(e)
 
 def plot_deme():
-  global deme_list
   x = [x for x in range(len(deme_list))]
-  plt.plot(x,deme_list,'-')
-  plt.fill_between(x,deme_list,-2,where=(deme_list > -3), facecplor='g', alpha=0.6)
+  plt.scatter(x, deme_list, label="配当倍率リスト")
 
-  plt.title("配当倍率リスト")
   plt.show()
   return
 
@@ -89,7 +88,6 @@ def chinchiro_game(cheating_flag, kakekin):
     return calc
   
 def syonben():
-  global deme_list
   if random.random() > 0.9:
     deme_list.append(-1)
     return True
@@ -98,7 +96,6 @@ def syonben():
 def yaku(deme): 
   #count[0]にはデメ[0]と一致している目が何個あるか代入される。なので1以上確定。
   #countの中に2があるならば、"通常の目"となる。3であるならば、"ゾロ目"となる。
-  global deme_list
   count = [deme.count(deme[i]) for i in range(3)]
   
   if 3 in count: #ゾロ目
@@ -127,6 +124,5 @@ def yaku(deme):
     return -1
 
 if __name__ == "__main__":
-    deme_list
     main()
   
